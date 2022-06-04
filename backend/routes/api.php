@@ -28,3 +28,4 @@ Route::post('login', [AuthController::class, 'loginUser']);
 Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::post('logout', [AuthController::class, 'logoutUser']);
 });
+Route::get('/assignments', [AdminController::class, 'getAssignments']);

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Models\Assignment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TaskController extends Controller
 {
@@ -18,14 +20,37 @@ class TaskController extends Controller
     {
         $field = $request->validate([
             'task' => 'required',
+            'user' => 'required'
         ]);
 
         $task = Task::create([
-            'task'        => $field['task'],
-            'description' => $request->input('description')
+             'task'        => $field['task'],
+             'description' => $request->input('description')
+        ]);
+        
+        //check if that task is already assigned to user
+        $existingTask = Assignment::where([
+                ['task_id', $task->id],
+                ['user_id', $field['user']]
+            ])->exists();
+
+        if($existingTask){
+            return 'Task is already exist with this user';
+        }   
+
+        $assignTask = DB::table('assignments')->insert([
+            'user_id' => $field['user'],
+            'task_id'      => $task->id
         ]);
 
-        return response($task, 201);
+        if($assignTask){
+            return response([
+                'Task successfuly created', 
+                $task, 201
+            ]);
+        }
+
+        return 'Something went wrong';
     }
 
     //delete task by id
@@ -34,6 +59,7 @@ class TaskController extends Controller
         $existingTask = Task::find($id);
 
         if($existingTask){
+            DB::table('assignments')->where('task_id', $id)->delete();
             $existingTask->delete();
             return "Task successfully deleted";
         }   
@@ -52,8 +78,8 @@ class TaskController extends Controller
         ]);
 
         if($success){
-            return "Task updated successfully";
+            return 'Task updated successfully';
         }
-        return "Something went wrong";
+        return 'Something went wrong';
     }
 }
