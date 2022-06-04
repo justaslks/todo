@@ -27,5 +27,7 @@ Route::post('/register', [AuthController::class, 'registerUser']);
 Route::post('login', [AuthController::class, 'loginUser']);
 Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::post('logout', [AuthController::class, 'logoutUser']);
+    Route::group(['middleware' => ['is_admin']], function(){
+        Route::get('/assignments', [AdminController::class, 'getAssignments']);
+    });
 });
-Route::get('/assignments', [AdminController::class, 'getAssignments']);
