@@ -21,7 +21,7 @@ class TaskController extends Controller
         ]);
 
         $task = Task::create([
-            'task' => $field['task'],
+            'task'        => $field['task'],
             'description' => $request->input('description')
         ]);
 
@@ -46,11 +46,10 @@ class TaskController extends Controller
             'task' => 'required',
         ]);
         
-        $success = Task::where('id', $id)
-            ->update([
-                'task' => $field['task'],
+        $success = Task::where('id', $id)->update([
+                'task'        => $field['task'],
                 'description' => request('description')
-            ]);
+        ]);
 
         if($success){
             return "Task updated successfully";
