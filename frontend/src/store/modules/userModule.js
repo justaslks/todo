@@ -1,9 +1,14 @@
 import axios from 'axios'
 
 const state = {
-    user: {}
+    user: {},
+    users: []
 }
-const getters = {}
+const getters = {
+    getUser(state){
+        return state.user.isAdmin
+    }
+}
 const actions = {
     registerUser(_, user){
         axios.post(process.env.VUE_APP_URL + 'register', {
@@ -59,13 +64,25 @@ const actions = {
                 commit('SET_USER', response.data)
             })
             .catch(error => {
+                console.log(error)
+            })
+    },
+    getAllUsers({commit}){
+        axios.get(process.env.VUE_APP_URL + 'users')
+            .then(response => {
+                commit('SET_USERS', response.data)
+            })
+            .catch(error => {
                 console.log(error);
-            });
+            })
     }
 }
 const mutations = {
     SET_USER(state, data){
         state.user = data
+    },
+    SET_USERS(state, data){
+        state.users = data
     }
 }
 

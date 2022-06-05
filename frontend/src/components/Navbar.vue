@@ -1,11 +1,8 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="#">To Do</a>
+        <router-link class="navbar-brand" to="/">To Do</router-link>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-            <li class="nav-item active">
-                <router-link class="nav-link" to="/">Home</router-link>
-            </li>
             <li class="nav-item">
                 <router-link class="nav-link" to="/users">Users</router-link>
             </li>
@@ -54,7 +51,7 @@ export default {
 }
 .navbar{
     padding: 15px;
-    padding-left: 18%;
+    padding-left: 20%;
     margin: auto;
     background-color: #006640;
 }
@@ -63,6 +60,6 @@ export default {
     color: white;
 }
 .d-flex{
-    padding-right: 10%;
+    padding-right: 20%;
 }
 </style>

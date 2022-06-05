@@ -13,8 +13,12 @@ class AdminController extends Controller
      * User::create(['name'=>'admin', 'email'=>'admin@admin.com', 'isAdmin'=>'1', 'password'=>bcrypt('adminas')])
      */
     //admin functions
-    public function getAssignments()
+    public function getAssignments(Request $request)
     {
+
+        if(request('sorter')){
+            return Task::orderBy(request('sorter'))->with('users')->get();
+        }
         return Task::with('users')->get();
     }
 }

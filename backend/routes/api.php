@@ -22,7 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::get('/tasks', [TaskController::class, 'getTasks']);
 Route::post('/task', [TaskController::class, 'createTask']);
-Route::delete('/task/{task}', [TaskController::class, 'deleteTask']);
+
 Route::put('/task/{task}', [TaskController::class, 'updateTask']);
 Route::post('/register', [AuthController::class, 'registerUser']);
 Route::post('login', [AuthController::class, 'loginUser']);
@@ -31,5 +31,7 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::get('/user', [UserController::class, 'currentUser']);
     Route::group(['middleware' => ['is_admin']], function(){
         Route::get('/assignments', [AdminController::class, 'getAssignments']);
+        Route::get('/users', [UserController:: class, 'getUsers']);
+        Route::delete('/task/{task}', [TaskController::class, 'deleteTask']);
     });
 });
