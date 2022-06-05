@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -26,7 +27,8 @@ Route::put('/task/{task}', [TaskController::class, 'updateTask']);
 Route::post('/register', [AuthController::class, 'registerUser']);
 Route::post('login', [AuthController::class, 'loginUser']);
 Route::group(['middleware' => ['auth:sanctum']], function(){
-    Route::post('logout', [AuthController::class, 'logoutUser']);
+    Route::post('/logout', [AuthController::class, 'logoutUser']);
+    Route::get('/user', [UserController::class, 'currentUser']);
     Route::group(['middleware' => ['is_admin']], function(){
         Route::get('/assignments', [AdminController::class, 'getAssignments']);
     });
