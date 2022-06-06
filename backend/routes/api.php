@@ -29,9 +29,14 @@ Route::post('login', [AuthController::class, 'loginUser']);
 Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::post('/logout', [AuthController::class, 'logoutUser']);
     Route::get('/user', [UserController::class, 'currentUser']);
+    Route::get('/usertasks', [UserController::class, 'getMyTasks']);
+    Route::put('/status/{task}', [UserController:: class, 'changeStatus']);
     Route::group(['middleware' => ['is_admin']], function(){
         Route::get('/assignments', [AdminController::class, 'getAssignments']);
         Route::get('/users', [UserController:: class, 'getUsers']);
         Route::delete('/task/{task}', [TaskController::class, 'deleteTask']);
+        Route::post('/adduser', [AdminController::class, 'createUser']);
+        Route::delete('/user/{user}', [AdminController::class, 'deleteUser']);
+        Route::put('/user/{user}', [AdminController::class, 'editUser']);
     });
 });

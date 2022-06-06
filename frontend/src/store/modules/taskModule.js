@@ -26,13 +26,12 @@ const actions = {
                 sorter: task ? task.sorter : ''
             }
         })
-            .then(response => {
-                commit('SET_TASKS', response.data)
-                console.log(response.data)
-            })
-            .catch(error => {
-                console.log(error);
-            })
+        .then(response => {
+            commit('SET_TASKS', response.data)
+        })
+        .catch(error => {
+            console.log(error)
+        })
     },
     deleteTask(_, task){
         axios.delete(process.env.VUE_APP_URL + 'task/' + task.id)

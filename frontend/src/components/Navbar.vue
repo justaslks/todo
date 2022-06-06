@@ -4,10 +4,10 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
             <li class="nav-item">
-                <router-link class="nav-link" to="/users">Users</router-link>
+                <router-link class="nav-link" v-if="currentUser.isAdmin" to="/admin">Admin</router-link>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Pricing</a>
+                
             </li>
             </ul>
         </div>

@@ -1,16 +1,17 @@
 <template>    
-    <div class="block"> 
+    <div class="block mb-4"> 
         <select class="selectas form-select mt-2" aria-label="Default select example" @change="sortTasks($event)">
             <option value="" selected>Select sorting</option>
-            <option value="1">Sort by name</option>
-            <option value="2">Sort by date</option>
+            <option value="task">Sort by name</option>
+            <option value="status">Sort by status</option>
+            <option value="created_at">Sort by date</option>
         </select>
         <div class="card mt-2" v-for="task in tasks" :key="task.id">
             <div class="card-body">
                 <b class="">{{task.id}} - {{task.task}}</b> 
-                <button @click="removeTask(task.id)" class="btn btn-sm btn-danger float-end">Delete</button>
-                <p class="card-text">{{task.description}}<br/> <b>Status:</b> <i>{{task.status}}</i>, <b>User: </b>
-                <i v-for="user in task.users" :key="user.id">{{user.name}}</i>, <b>date: </b>
+                <button @click="removeTask(task.id)" class="btn btn-sm btn-danger float-end" v-if="message==false">Delete</button>
+                <p class="card-text">{{task.description}}<br/> <b>Status:</b> <i>{{task.status}}</i> | <b>User: </b>
+                <i v-for="user in task.users" :key="user.id">{{user.name}}</i> | <b>date: </b>
                 <i>{{getHumanDate(task.created_at)}}</i></p>
             </div>
         </div>
@@ -22,6 +23,9 @@ import moment from 'moment'
 
 export default {
     name: 'tasks-page',
+    props: {
+        message: Boolean
+    },
     data: function() {
         return {
             sorterValue: ''
@@ -38,16 +42,7 @@ export default {
             return moment(date, 'YYYY-MM-DD hh:mm').format('DD/MM/YYYY hh:mm');
         },
         sortTasks(event){
-            let value = event.target.value
-            if(value == 1){
-                this.sorterValue = 'task'
-            }
-            else if(value == 2){
-                this.sorterValue = 'created_at'
-            }
-            else{
-                this.sorterValue = ''
-            }
+            this.sorterValue = event.target.value
             console.log(this.sorterValue)
             this.$store.dispatch('taskModule/loadTasks',{
                 sorter: this.sorterValue

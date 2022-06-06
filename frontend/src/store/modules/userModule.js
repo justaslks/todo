@@ -2,15 +2,23 @@ import axios from 'axios'
 
 const state = {
     user: {},
-    users: []
+    users: [],
+    tasks: [],
+    sorter: {}
 }
 const getters = {
     getUser(state){
-        return state.user.isAdmin
-    }
+        return state.user
+    },
+    errorsLogin(state){
+        return state.errorsLogin
+    },
+    errorsRegister(state){
+        return state.errorsRegister
+    },
 }
 const actions = {
-    registerUser(_, user){
+    registerUser({commit}, user){
         axios.post(process.env.VUE_APP_URL + 'register', {
             name: user.name,
             email: user.email,
@@ -18,18 +26,22 @@ const actions = {
             password_confirmation: user.password_confirmation
         })
         .then(response => {
+            commit('UNSET_ERRORS')
             console.log(response)
+            window.location.replace('/login')
         })
         .catch(error => {
+            commit('SET_ERRORS_REGISTER', error.response.data.errors)
             console.log(error)
         })
     },
-    loginUser(_, user){
+    loginUser({commit}, user){
         axios.post(process.env.VUE_APP_URL + 'login', {
             email: user.email,
             password: user.password
         })
         .then( response => {
+            commit('UNSET_ERRORS')
             if(response.data.token){
                 //save token to localstorage
                 localStorage.setItem(
@@ -41,6 +53,7 @@ const actions = {
             }
         })
         .catch(error => {
+            commit('SET_ERRORS_LOGIN', error.response.data)
             console.log(error)
         })
     },
@@ -75,6 +88,32 @@ const actions = {
             .catch(error => {
                 console.log(error);
             })
+    },
+    getMyTasks({commit}, task){
+        axios.get(process.env.VUE_APP_URL + 'usertasks', {
+            params: {
+                sorter: task ? task.sorter : ''
+            }
+        })
+            .then(response => {
+                console.log(response.data)
+                commit('SET_TASKS', response.data)
+               
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    },
+    changeStatus(_, task){
+        axios.put(process.env.VUE_APP_URL + 'status/' + task.id, {
+            status: task.status
+        })
+        .then(response => {
+            console.log(response)
+        })
+        .catch(error => {
+            console.log(error)
+        })
     }
 }
 const mutations = {
@@ -83,6 +122,18 @@ const mutations = {
     },
     SET_USERS(state, data){
         state.users = data
+    },
+    SET_TASKS(state, data){
+        state.tasks = data
+    },
+    SET_ERRORS_LOGIN(state, data){
+        state.errorsLogin = data
+    },
+    SET_ERRORS_REGISTER(state, data){
+        state.errorsRegister = data
+    },
+    UNSET_ERRORS(state){
+        state.errorsLogin = ''
     }
 }
 
