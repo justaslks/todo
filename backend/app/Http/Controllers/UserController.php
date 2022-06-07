@@ -40,8 +40,8 @@ class UserController extends Controller
         }
 
         return  Task::with(['users' => function ($query) {
-            $query->where('user_id', Auth::user()->id);
-        }])->get();
+                    $query->where('user_id', Auth::user()->id);
+                }])->get();
     }
 
     public function changeStatus($id)

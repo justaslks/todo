@@ -17,21 +17,18 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-Route::get('/tasks', [TaskController::class, 'getTasks']);
-Route::post('/task', [TaskController::class, 'createTask']);
-
-Route::put('/task/{task}', [TaskController::class, 'updateTask']);
+//public routes
 Route::post('/register', [AuthController::class, 'registerUser']);
 Route::post('login', [AuthController::class, 'loginUser']);
+
+//authenticated routes
 Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::post('/logout', [AuthController::class, 'logoutUser']);
     Route::get('/user', [UserController::class, 'currentUser']);
     Route::get('/usertasks', [UserController::class, 'getMyTasks']);
     Route::put('/status/{task}', [UserController:: class, 'changeStatus']);
     Route::group(['middleware' => ['is_admin']], function(){
+        Route::post('/task', [TaskController::class, 'createTask']);
         Route::get('/assignments', [AdminController::class, 'getAssignments']);
         Route::get('/users', [UserController:: class, 'getUsers']);
         Route::delete('/task/{task}', [TaskController::class, 'deleteTask']);
