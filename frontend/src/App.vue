@@ -1,7 +1,7 @@
 <template>
-  <div class="">
     <Navbar/>
-    <router-view />
+    <router-view /> 
+  <div class="page">
   </div>
   <Footer class="mt-auto" />
 </template>
@@ -29,5 +29,8 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+.page{
+  padding-top: 20px;
 }
 </style>

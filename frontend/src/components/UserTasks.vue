@@ -8,8 +8,9 @@
             <option value="created_at">Sort by date</option>
         </select>
     </div>
-    <div v-for="task in tasks" :key="task.id" >
-        <div class="card cardas mt-2" v-if="task.users[0].id == useris.id">
+   
+    <div v-for="task in tasks" :key="task.id">
+        <div class="card cardas mt-2" v-if="task.users.length">
             <div class="card-body" >   
                 <b>{{task.task}}</b>
                 <p>

@@ -4,7 +4,7 @@
         <button class="btn" v-on:click="isHidden=!isHidden">Users</button>
         <button class="btn" v-on:click="isHidden1=!isHidden1">tasks</button>
     </div>
-    <div v-if="isHidden == true && isHidden1 == true" class="up"></div>
+    <div v-if="isHidden == true && isHidden1 == true"></div>
     <div v-if="!isHidden">
         <div class="form-group forma3 mb-3">
             User creation
@@ -92,8 +92,5 @@ export default {
 <style>
 .users{
     padding-top: 200px;
-}
-.up{
-    padding-top: 33%;
 }
 </style>

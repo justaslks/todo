@@ -5,6 +5,7 @@ use App\Models\Task;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -29,13 +30,18 @@ class UserController extends Controller
         if(request('sorter')){
             $sorter = request('sorter');
             if($sorter == 'status')
-                return Task::with('users')->orderBy(request('sorter'))->get();
+                return Task::with(['users' => function ($query) {
+                        $query->where('user_id', Auth::user()->id);
+                    }])->orderBy(request('sorter'))->get();
 
-            return Task::with('users')->orderByDesc(request('sorter'))->get();
+            return Task::with(['users' => function ($query) {
+                    $query->where('user_id', Auth::user()->id);
+                }])->orderByDesc(request('sorter'))->get();
         }
-        $tasks = Task::with('users')->get();
 
-        return $tasks;
+        return  Task::with(['users' => function ($query) {
+            $query->where('user_id', Auth::user()->id);
+        }])->get();
     }
 
     public function changeStatus($id)
